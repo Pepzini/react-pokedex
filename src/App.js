@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/react-pokedex" element={<Main />} />
           <Route path="/pokemonsinfo/:id" element={<PokemonInfo />} />
           <Route path="/favourites" element={<Favourites />} /> 
         </Routes>
