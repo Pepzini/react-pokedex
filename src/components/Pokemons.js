@@ -17,8 +17,8 @@ const Pokemons = ({ pokemon, loading }) => {
             const style = `img-container ${pokemon.types[0].type.name}`
             return (
               <div className="pokemon-container">
-                <Link to={`/pokemonsinfo/${pokemon.id}`}>
-                  <div className="pokemon-card" key={pokemon.id} onClick={() =>
+                <Link to={`/pokemonsinfo/${pokemon.id}`} key={pokemon.id}>
+                  <div className="pokemon-card" onClick={() =>
                     console.log(pokemon.id)}>
 
                     <div className={style}>

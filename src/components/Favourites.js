@@ -6,46 +6,57 @@ import '../App.css';
 
 
 const Favourites = ({pokemon, loading}) => {
-  // get data from local storage
-  const data = JSON.parse(localStorage.getItem('favourites')) || [];
-  // console.log(data);
-  const style = `img-container ${pokemon.types[0].type.name}`
+   //check if pokemon is in favorites
+    const isFavorite = (pokemon) => {
+      const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      return favorites.includes(pokemon);
+    }
+    //get favorites from local storage
+    const getFavorites = () => {
+      return JSON.parse(localStorage.getItem("favorites")) || [];
+    }
 
-
-  return (
-    <div className="favourites">
-    {/* display favourites as cards */}
-      {data.map((pokemon) => (
-       <div className="pokemon-container">
-       <Link to={`/pokemonsinfo/${pokemon.id}`}>
-         <div className="pokemon-card" key={pokemon.id} onClick={() =>
-           console.log(pokemon.id)}>
-
-           <div className={style}>
-             <img src={pokemon.sprites.front_default} alt="pokemon" />
-           </div>
-           <div className="pokemon-info">
-             <h3>#{pokemon.id}</h3>
-             <h3>{pokemon.name}</h3>
-
-             <p>
-               <span>Types: </span>
-               {pokemon.types.map((type, index) => {
-                 return (
-                   <span key={index}>
-                     {type.type.name}
-                     {index !== pokemon.types.length - 1 && ", "}
-                   </span>
-                 );
-               })}
-             </p>
-           </div>
-         </div>
-       </Link>
-       </div>
-      ))}
-    </div>
-  )
+    return (
+      <div className="favourites">
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="pokemon-container">
+            {getFavorites().map((pokemon) => (
+              <Link to={`/pokemonsinfo/${pokemon.id}`} key={pokemon.id}>
+              <div className="pokemon-card" >
+              <div className ="img-container">
+                <img src={pokemon.sprites.front_default} alt="pokemon" />
+              </div>
+              <div className="pokemon-info">
+                <h3>#{pokemon.id}</h3>
+                <h3>{pokemon.name}</h3>
+                <p>
+                  <span>Types: </span>
+                  {pokemon.types.map((type, index) => {
+                    return (
+                      <span key={index}>
+                        {type.type.name}
+                        {index !== pokemon.types.length - 1 && ", "}
+                      </span>
+                    );
+                  })}
+                </p>
+              </div>
+            </div>
+            </Link>
+            ))
+            }
+            {/* show no message if no favorites */}
+            {getFavorites().length === 0 && (
+              <div className="no-favorites">
+                <h3>No favorites</h3>
+              </div>  
+            )}
+          </div>
+        )}
+      </div>
+    );
 }
 
 export default Favourites

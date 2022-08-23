@@ -41,30 +41,37 @@ const PokemonInfo = ({pokemon}) => {
   //define pokemon types
   const types = pokemonDetails ? pokemonDetails.types.map((type) => type.type.name) : [];
   const style = `pokemon-details-header ${types.join(" ")}`;
-  // console.log(style);
-  // add pokemon to favorites in local storage
-  const addToFavorites = (pokemon) => {
+  // add pokemon to favorites in local storage just once
+  const addToFavorites = () => {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    favorites.push(pokemon);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }
-  //remove pokemon from favorites in local storage
-  const removeFromFavorites = (pokemon) => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const newFavorites = favorites.filter((favorite) => favorite.id !== pokemon.id);
-    localStorage.setItem("favorites", JSON.stringify(newFavorites));
-  }
-  //check if pokemon is in favorites
-  const isFavorite = (pokemon) => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    return favorites.some((favorite) => favorite.id === pokemon.id);
+    if (!favorites.includes(pokemonDetails)) {
+      favorites.push(pokemonDetails);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
   }
 
-  return (
+  //remove pokemon from favorites in local storage
+  const removeFromFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const newFavorites = favorites.filter((pokemon) => pokemon.id !== pokemonDetails.id);
+    localStorage.setItem("favorites", JSON.stringify(newFavorites));
+  }
+  //check if pokemon is in favorites 
+  const isFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    return favorites.includes(pokemonDetails);
+  }
+  //set value of favorite button to add and remove from favorites
+  const [favorite, setFavorite] = useState(isFavorite(pokemonDetails));
+  useEffect(() => {
+    setFavorite(isFavorite(pokemonDetails));
+  } ,[pokemonDetails]); 
+    return (
     <>
       {loading ? (
         <Loader />
       ) : (
+       
         <div className="pokemon-page">
            <div className="pokemon-details-header-back">
               <FaAngleLeft className="pokemon-details-header-back-icon" onClick={
@@ -143,17 +150,23 @@ const PokemonInfo = ({pokemon}) => {
                 now={pokemonDetails.stats[5].base_stat}
               />
             </div>
-            {/* <div className="progressbar">
-                <h4>Avg. Power</h4>
-                <ProgressBar variant={getBarColor(pokemonDetails.stats[6].base_stat)} now={pokemonDetails.stats[6].base_stat} />
-            </div> */}
           </div>
-          {/* add pokemon to favourite */}
+          {/* add and remove pokemon from favourite with one button */}
           <div className="pokemon-details-favourite">
-            <button className="add-to-favorites" onClick={() => addToFavorites(pokemonDetails)}
-            >
-            Add to Favourite
+            <button className="add-to-favorites" onClick={() => {
+              favorite ? removeFromFavorites() : addToFavorites();
+              if (favorite) {
+                setFavorite(false);
+              }
+              else {
+                setFavorite(true);
+              }
+            }
+            }>
+              {/* check if pokemon is in favorites and set button text accordingly */}
+              {favorite ? "Remove from favorites" : "Add to favorites"}
             </button>
+
           </div>
 
         </div>

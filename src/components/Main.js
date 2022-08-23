@@ -1,9 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import React, { useEffect, useState } from "react";
-import {Link} from 'react-router-dom';
 import Favourites from "./Favourites";
 import Pokemons from "./Pokemons";
-import PokemonInfo from "./PokemonInfo";
 import 'react-tabs/style/react-tabs.css';
 import "../App.css";
 import axios from "axios";
@@ -47,13 +45,13 @@ const Main = () => {
       <Tabs className="tabStyle">
         <TabList className='tabs'>
           <Tab>Pokemons</Tab>
-          <Tab>Fav</Tab>
+          <Tab>Favourites</Tab>
         </TabList>
         <TabPanel>
           <Pokemons pokemon={pokeData} loading={loading}  />
         </TabPanel>
         <TabPanel>
-          <Link to="/favourites"></Link>
+          <Favourites />
         </TabPanel>
       </Tabs>
     </>
