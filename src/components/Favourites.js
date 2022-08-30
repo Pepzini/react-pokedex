@@ -1,5 +1,4 @@
 import React from 'react'
-import PokemonInfo from "./PokemonInfo";
 import Loader from "./Loader";
 import {Link} from 'react-router-dom';
 import '../App.css';
@@ -15,6 +14,10 @@ const Favourites = ({pokemon, loading}) => {
     const getFavorites = () => {
       return JSON.parse(localStorage.getItem("favorites")) || [];
     }
+
+    const filteredFavourites = getFavorites().filter((c, index) =>{
+      return getFavorites().indexOf(c) === index;
+    })
 
     return (
       <div className="favourites">

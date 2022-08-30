@@ -8,11 +8,22 @@
   <meta name="description" content="Web site created using create-react-app" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <title>React App</title>
+  <title>PokeDex</title>
 </head>
-
+<style>
+   .pre-loader{
+    min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background-color: blue;
+   }
+</style>
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="preloader" class="pre-loader">
+    <img src="src\images/Vector.png" alt="preloader" srcset="">
+  </div>
   <div id="root"></div>
 </body>
 

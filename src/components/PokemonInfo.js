@@ -6,10 +6,14 @@ import "../App.css";
 import axios from "axios";
 
 const PokemonInfo = ({pokemon}) => {
-  const [pokemonDetails, setPokemonDetails] = useState();
+  const [pokemonDetails, setPokemonDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   //give each progress bar a different color
 
+  const [favorites, setFavorites] = useState([])
+  
+  const localFavorites = JSON.parse(localStorage.getItem("favorites"))
+  
   const id = window.location.pathname.split("/")[2];
 
   const getPokemonDetails = async (id) => {
@@ -22,11 +26,21 @@ const PokemonInfo = ({pokemon}) => {
   const getPokemonData = async (id) => {
     const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
     return res;
-  };
+    };
 
-  useEffect(() => {
-    getPokemonDetails(id);
-  }, []);
+    useEffect(() => {
+      const fetch = async (id) => {
+        const details = await getPokemonData(id);
+        setPokemonDetails(details.data);
+        console.log(details.data);
+        setLoading(false);
+        return
+    }
+
+    fetch(id);
+
+    setFavorites(localFavorites)
+  }, [id, localFavorites])
 
   //give each progress bar a different color
   const getBarColor = (percentage) => {
@@ -41,31 +55,32 @@ const PokemonInfo = ({pokemon}) => {
   //define pokemon types
   const types = pokemonDetails ? pokemonDetails.types.map((type) => type.type.name) : [];
   const style = `pokemon-details-header ${types.join(" ")}`;
+  
+
   // add pokemon to favorites in local storage just once
-  const addToFavorites = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    if (!favorites.includes(pokemonDetails)) {
+  const addToFavorites = (pokemonDetails) => {
+    console.log(pokemonDetails)
+    if (!isFavorite(pokemonDetails)) {
       favorites.push(pokemonDetails);
       localStorage.setItem("favorites", JSON.stringify(favorites));
     }
   }
 
   //remove pokemon from favorites in local storage
-  const removeFromFavorites = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const removeFromFavorites = (pokemonDetails) => {
     const newFavorites = favorites.filter((pokemon) => pokemon.id !== pokemonDetails.id);
     localStorage.setItem("favorites", JSON.stringify(newFavorites));
   }
   //check if pokemon is in favorites 
-  const isFavorite = () => {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const isFavorite = (pokemonDetails) => {
     return favorites.includes(pokemonDetails);
   }
+
   //set value of favorite button to add and remove from favorites
-  const [favorite, setFavorite] = useState(isFavorite(pokemonDetails));
-  useEffect(() => {
-    setFavorite(isFavorite(pokemonDetails));
-  } ,[pokemonDetails]); 
+  // const [favorite, setFavorite] = useState(isFavorite(pokemonDetails));
+  // useEffect(() => {
+  //   setFavorite(isFavorite(pokemonDetails));
+  // } ,[pokemonDetails]); 
     return (
     <>
       {loading ? (
@@ -154,17 +169,11 @@ const PokemonInfo = ({pokemon}) => {
           {/* add and remove pokemon from favourite with one button */}
           <div className="pokemon-details-favourite">
             <button className="add-to-favorites" onClick={() => {
-              favorite ? removeFromFavorites() : addToFavorites();
-              if (favorite) {
-                setFavorite(false);
-              }
-              else {
-                setFavorite(true);
-              }
+              isFavorite(pokemonDetails) ? removeFromFavorites(pokemonDetails) : addToFavorites(pokemonDetails);
             }
             }>
               {/* check if pokemon is in favorites and set button text accordingly */}
-              {favorite ? "Remove from favorites" : "Add to favorites"}
+              {isFavorite(pokemonDetails) ? "Remove from favorites" : "Add to favorites"}
             </button>
 
           </div>

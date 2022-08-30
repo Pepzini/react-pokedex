@@ -1,13 +1,23 @@
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import React, { useEffect, useState } from "react";
 import Favourites from "./Favourites";
 import Pokemons from "./Pokemons";
 import 'react-tabs/style/react-tabs.css';
 import "../App.css";
 import axios from "axios";
-// import InfiniteScroll from "react-infinite-scroll-component";
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import image from '../images/Vector.png'
 
 const Main = () => {
+  const [value, setValue] = React.useState('1');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const [pokeData, setPokeData] = useState([]);
   const [loading, setLoading] = useState(true);
   const url = "https://pokeapi.co/api/v2/pokemon/"
@@ -38,23 +48,44 @@ const Main = () => {
     pokemonList();
     // fetchMoreData();
   }, [url])
+   
+  
   return (
     <>
-      {/* pass data to pokemonInfo */}
-
-      <Tabs className="tabStyle">
-        <TabList className='tabs'>
-          <Tab>Pokemons</Tab>
-          <Tab>Favourites</Tab>
-        </TabList>
-        <TabPanel>
-          <Pokemons pokemon={pokeData} loading={loading}  />
+    <div className="header">
+    <img src={image} alt="logo" />
+    <h2>Pokedex</h2>
+    </div>
+    <Box sx={{ width: '100%', typography: 'body1'}}>
+      <TabContext value={value}>
+        <Box>
+          <TabList onChange={handleChange} 
+          variant="fullWidth"
+          sx= {{
+            bgcolor: 'background.paper',
+            "& button": {
+              textTransform: 'capitalize',
+              fontSize: '20px',
+              fontWeight: '500',
+              lineHeight: '24px'
+            },
+          }}
+          aria-label="lab API tabs example">
+            <Tab label="Pokemons" value="1" />
+            <Tab label="Favourites" value="2" />
+           
+          </TabList>
+        </Box>
+        <TabPanel value="1">
+        <Pokemons pokemon={pokeData} loading={loading}  />
         </TabPanel>
-        <TabPanel>
+        <TabPanel value="2">
           <Favourites />
         </TabPanel>
-      </Tabs>
+      </TabContext>
+    </Box>
     </>
-  )
+  );
+
 }
 export default Main;

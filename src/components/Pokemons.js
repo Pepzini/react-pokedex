@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
+
 // import {useNavigate} from 'react-router-dom'
 import "../App.css";
 
 const Pokemons = ({ pokemon, loading }) => {
+
   return (
     <>
       <div className="pokemon-container">
@@ -18,8 +20,7 @@ const Pokemons = ({ pokemon, loading }) => {
             return (
               <div className="pokemon-container">
                 <Link to={`/pokemonsinfo/${pokemon.id}`} key={pokemon.id}>
-                  <div className="pokemon-card" onClick={() =>
-                    console.log(pokemon.id)}>
+                  <div className="pokemon-card">
 
                     <div className={style}>
                       <img src={pokemon.sprites.front_default} alt="pokemon" />

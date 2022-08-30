@@ -6,7 +6,7 @@
 
 body {
   /* background-color: #dce6e5; */
-  background: linear-gradient(to right, #f3f3f3, #f3eded);
+  background: #E8E8E8;
   font-family: "Poppins", sans-serif;
   /* display: flex;
   align-items: center;
@@ -53,24 +53,33 @@ a{
 a :hover{
   color: #434343; 
 }
-
-.tabs{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 5px;
-    padding: 10px;
-    font-size: 20px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd9d9;
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  margin-bottom: 4px;
 }
- .react-tabs__tab .react-tabs__tab--selected{
-  background-color: #e6a3a3;
-  text-decoration: underline;
-}  
-.react-tabs__tab--selected {
-   border-color: transparent;
-   border: none;
+.header img{
+  width: 30px;
+  height: 30px;
+}
+.header h2{
+  font-size: 30px;
+  font-weight: 700;
+  padding: 5px;
+  position: relative;
+top: 3px;
+}
+/* tab styling */
+.css-1aquho2-MuiTabs-indicator{
+  border: 2px solid #3558CD;
+  border-radius: 5px 5px 0px 0px;
+  background-color: transparent;
+ 
+}
+.box-style{
+  background-color: #ccc6c6;
 }
 .pokemon-container {
   display: flex;
@@ -80,10 +89,9 @@ a :hover{
   max-width: 1200px;
 }
 .pokemon-card {
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 3px 5px #434343;
   background-color: #fff;
-  /* text-decoration: none; */
   width: 250px;
   margin: 10px;
   text-align: center;
